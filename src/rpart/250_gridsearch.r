@@ -70,7 +70,7 @@ ArbolSimple  <- function( fold_test, data, param )
 ArbolesCrossValidation  <- function( data, param, qfolds, semilla )
 {
   divi  <- rep( 1, qfolds )
-  particionar( data, divi, seed=semilla )
+  particionar( data, divi, agrupa="clase_ternaria", seed=semilla )
 
   ganancias  <- mcmapply( ArbolSimple, 
                           seq(qfolds), # 1 2 3 4 5  
