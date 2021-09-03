@@ -6,11 +6,11 @@ require("data.table")
 require("rpart")
 
 #Aqui se debe poner la carpeta de la computadora local
-setwd("M:\\")  #Establezco el Working Directory
+setwd("C:/Users/santi/projects/maestria/dmef")  #Establezco el Working Directory
 
 #cargo los datos
-dtrain  <- fread("./datasetsOri/paquete_premium_202009.csv")
-dapply  <- fread("./datasetsOri/paquete_premium_202011.csv")
+dtrain  <- fread("./datasets_ori/paquete_premium_202009.csv")
+dapply  <- fread("./datasets_ori/paquete_premium_202011.csv")
 
 
 for( profundidad  in  c(2,3,4,5,6,7,8,10,12,14,16,18,20,22,24,26,28,30) )

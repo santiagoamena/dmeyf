@@ -1,6 +1,7 @@
 rm( list=ls() )  #Borro todos los objetos
 gc()   #Garbage Collection
 
+require('rpart.plot')
 require("data.table")
 require("rpart")
 
@@ -18,12 +19,12 @@ particionar  <- function( data,  division, agrupa="",  campo="fold", start=1, se
 #------------------------------------------------------------------------------
 
 #Aqui se debe poner la carpeta de la computadora local
-setwd("M:\\")  #Establezco el Working Directory
+setwd("C:/Users/santi/projects/maestria/dmef")  #Establezco el Working Directory
 
 #cargo los datos
-dataset  <- fread("./datasetsOri/paquete_premium_202009.csv")
+dataset  <- fread("./datasets_ori/paquete_premium_202009.csv")
 
-particionar( dataset, division=c(70,30), agrupa="clase_ternaria", seed= 102191 )  #Cambiar por la primer semilla de cada uno !
+particionar( dataset, division=c(70,30), agrupa="clase_ternaria", seed= 100109 )  #Cambiar por la primer semilla de cada uno !
 
 #genero el modelo
 modelo  <- rpart("clase_ternaria ~ .",
@@ -32,6 +33,9 @@ modelo  <- rpart("clase_ternaria ~ .",
                  cp= -1,
                  maxdepth= 6 )
 
+pdf(file ="C:/Users/santi/projects/maestria/dmef/work/MiPrimerArbol_01.pdf", paper="usr" )
+prp(modelo, extra=101, digits=5, branch=1, type=4, varlen=0, faclen=0)
+dev.off()
 
 prediccion  <- predict( modelo, dataset[ fold==2] , type= "prob") #aplico el modelo
 

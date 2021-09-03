@@ -6,12 +6,12 @@ require("rpart")
 
 
 #Aqui se debe poner la carpeta de la computadora local
-setwd("M:\\")  #Establezco el Working Directory
+setwd("C:/Users/santi/projects/maestria/dmef")  #Establezco el Working Directory
 
 #cargo los datos
-dataset  <- fread("./datasetsOri/paquete_premium_202009.csv")
+dataset  <- fread("./datasets_ori/paquete_premium_202009.csv")
 
-ksemilla  <- 1021911  #Cambiar por la primer semilla de cada uno !
+ksemilla  <- 100109  #Cambiar por la primer semilla de cada uno !
 #divido en training/testing
 set.seed( ksemilla )
 fold  <- ifelse( runif( nrow(dataset) ) <  0.7, 1, 2 )

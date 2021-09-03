@@ -6,11 +6,11 @@ require("data.table")
 require("parallel")
 require("rpart")
 
-#setwd( "M:\\" )
-setwd( "~/buckets/b1/crudoB/" )
+setwd( "C:/Users/santi/projects/maestria/dmef" )
+#setwd( "~/buckets/b1/crudoB/" )
 
-ksemillas  <- c(102191, 200177, 410551, 552581, 892237) #reemplazar por las propias semillas
-ksemilla_extra  <- 950009  #reemplazar por una elegida en el momento
+ksemillas  <- c(100109, 376183, 613747, 742999, 821741) #reemplazar por las propias semillas
+ksemilla_extra  <- 900019  #reemplazar por una elegida en el momento
 
 #------------------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ ArbolesMontecarlo  <- function( data, param, semillas )
                           semillas, 
                           MoreArgs= list( data, param), 
                           SIMPLIFY= FALSE,
-                          mc.cores= 5 )  #se puede subir a 5 si posee Linux o Mac OS
+                          mc.cores= 1 )  #se puede subir a 5 si posee Linux o Mac OS
 
   #devuelvo la primer ganancia y el promedio
   return( mean( unlist( ganancias ))  ) 
@@ -71,7 +71,7 @@ ArbolesMontecarlo  <- function( data, param, semillas )
 #------------------------------------------------------------------------------
 
 #cargo los datos donde voy a ENTRENAR el modelo
-dataset  <- fread("./datasetsOri/paquete_premium_202009.csv")
+dataset  <- fread("./datasets_ori/paquete_premium_202009.csv")
 
 #inicializo la tabla donde voy a dejar los resultados
 tb_resultados  <- data.table( maxdepth=integer(), ganancia1=numeric(), ganancia5=numeric()  )

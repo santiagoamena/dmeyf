@@ -9,9 +9,9 @@ require("rlist")
 require("parallel")
 require("rpart")
 
-setwd( "M:\\" )
+setwd( "C:/Users/santi/projects/maestria/dmef" )
 
-ksemillas  <- c(102191, 200177, 410551, 552581, 892237) #reemplazar por las propias semillas
+ksemillas  <- c(100109, 376183, 613747, 742999, 821741) #reemplazar por las propias semillas
 
 #------------------------------------------------------------------------------
 
@@ -84,7 +84,7 @@ ArbolesCrossValidation  <- function( data, param, qfolds, semilla )
 #------------------------------------------------------------------------------
 
 #cargo los datos donde voy a ENTRENAR el modelo
-dataset  <- fread("./datasetsOri/paquete_premium_202009.csv")
+dataset  <- fread("./datasets_ori/paquete_premium_202009.csv")
 
 
 for( vcp in c( -1, 0) ) 
@@ -105,12 +105,7 @@ for( vminbucket  in  unique( as.integer(c(1,2,3,4,5,  vminsplit/10, vminsplit/5,
   E250  <- c( param_basicos,  list( "ganancia" = gan ) )
   loguear( E250 )
 }
-
-  param_basicos  <- list( "cp"= -1, 
-                          "minsplit"= 10,
-                          "minbucket"= 2,
-                          "maxdepth"= 5 )
-                          
+E250
                           
 
 
