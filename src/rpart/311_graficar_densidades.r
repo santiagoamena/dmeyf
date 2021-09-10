@@ -6,10 +6,10 @@ require("data.table")
 
 
 #Aqui comienza el programa
-setwd("~/buckets/b1/crudoB/")
+setwd("C:/Users/santi/projects/maestria/dmef")
 
-datasetA  <- fread( "./datasetsOri/paquete_premium_202009.csv" )
-datasetB  <- fread( "./datasetsOri/paquete_premium_202011.csv" )
+datasetA  <- fread( "./datasets_ori/paquete_premium_202009.csv" )
+datasetB  <- fread( "./datasets_ori/paquete_premium_202011.csv" )
 
 
 campos_buenos  <- setdiff(  colnames( datasetA),  c("numero_de_cliente","foto_mes","clase_ternaria" ) )

@@ -19,20 +19,21 @@ require("mlrMBO")
 
 
 #para poder usarlo en la PC y en la nube
-switch ( Sys.info()[['sysname']],
-         Windows = { directory.root   <-  "M:\\" },   #Microsoft Windows
-         Darwin  = { directory.root   <-  "~/dm/" },  #Apple MAC
-         Linux   = { directory.root   <-  "~/buckets/b1/crudo/" }  #Entorno Google Cloud
-       )
+#switch ( Sys.info()[['sysname']],
+#         Windows = { directory.root   <-  "C:/Users/santi/projects/maestria/dmef" }   #Microsoft Windows
+#         #Darwin  = { directory.root   <-  "~/dm/" },  #Apple MAC
+#         #Linux   = { directory.root   <-  "~/buckets/b1/crudo/" }  #Entorno Google Cloud
+#       )
 #defino la carpeta donde trabajo
-setwd( directory.root )
+#setwd( directory.root )
+setwd("C:/Users/santi/projects/maestria/dmef")
 
 
 kexperimento  <- NA   #NA si se corre la primera vez, un valor concreto si es para continuar procesando
 
 kscript           <- "320_rpart_BO"
-karch_generacion  <- "./datasetsOri/paquete_premium_202009.csv"
-karch_aplicacion  <- "./datasetsOri/paquete_premium_202011.csv"
+karch_generacion  <- "./datasets_ori/paquete_premium_202009.csv"
+karch_aplicacion  <- "./datasets_ori/paquete_premium_202011.csv"
 kBO_iter    <-  200   #cantidad de iteraciones de la Optimizacion Bayesiana
 
 hs  <- makeParamSet(
@@ -231,6 +232,6 @@ if(!file.exists(kbayesiana)) {
 } else  run  <- mboContinue( kbayesiana )   #retomo en caso que ya exista
 
 
-quit( save="no" )
+#quit( save="no" )
 
 

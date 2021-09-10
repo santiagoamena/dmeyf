@@ -6,11 +6,11 @@ require("data.table")
 
 
 #cargo los datasets que voy a comparar
-setwd("~/buckets/b1/crudoB/" )  #establezco la carpeta donde voy a trabajar
+setwd("C:/Users/santi/projects/maestria/dmef" )  #establezco la carpeta donde voy a trabajar
 
 
-datasetA  <- fread( "./datasetsOri/paquete_premium_202009.csv" )
-datasetB  <- fread( "./datasetsOri/paquete_premium_202011.csv" )
+datasetA  <- fread( "./datasets_ori/paquete_premium_202009.csv" )
+datasetB  <- fread( "./datasets_ori/paquete_premium_202011.csv" )
 
 #los campos sobre los que voy a trabajar
 campos_buenos <-  setdiff(  colnames( datasetA),  c("numero_de_cliente","foto_mes","clase_ternaria" ) )
