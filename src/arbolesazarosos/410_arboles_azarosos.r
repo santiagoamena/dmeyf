@@ -8,13 +8,13 @@ require("data.table")
 require("rpart")
 
 #Aqui se debe poner la carpeta de la computadora local
-setwd("~/buckets/b1/crudoB/")  #Establezco el Working Directory
+setwd("C:/Users/santi/projects/maestria/dmef")  #Establezco el Working Directory
 
 #cargo los datos donde entreno
-dtrain  <- fread("./datasetsOri/paquete_premium_202009.csv")
+dtrain  <- fread("./datasets_ori/paquete_premium_202009.csv")
 
 #cargo los datos donde aplico el modelo
-dapply  <- fread("./datasetsOri/paquete_premium_202011.csv")
+dapply  <- fread("./datasets_ori/paquete_premium_202011.csv")
 
 
 #Establezco cuales son los campos que puedo usar para la prediccion
