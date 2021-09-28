@@ -11,7 +11,7 @@ require("data.table")
 
 
 #Establezco el Working Directory
-setwd( "~/buckets/b1/crudoB" )
+setwd( "C:/Users/santi/projects/maestria/dmef" )
 
 
 EnriquecerDataset <- function( dataset , arch_destino )
@@ -115,8 +115,8 @@ dir.create( "./datasets/" )
 
 
 #lectura rapida del dataset  usando fread  de la libreria  data.table
-dataset1  <- fread("./datasetsOri/paquete_premium_202009.csv")
-dataset2  <- fread("./datasetsOri/paquete_premium_202011.csv")
+dataset1  <- fread("./datasets_ori/paquete_premium_202009.csv")
+dataset2  <- fread("./datasets_ori/paquete_premium_202011.csv")
 
 EnriquecerDataset( dataset1, "./datasets/paquete_premium_202009_ext.csv" )
 EnriquecerDataset( dataset2, "./datasets/paquete_premium_202011_ext.csv" )

@@ -11,10 +11,10 @@ gc()             #garbage collection
 require("data.table")
 require("lightgbm")
 
-setwd("~/buckets/b1/")
+setwd("C:/Users/santi/projects/maestria/dmef")
 
 #cargo el dataset donde voy a entrenar
-dataset  <- fread("./datasetsOri/paquete_premium_202009.csv")
+dataset  <- fread("./datasets_ori/paquete_premium_202009.csv")
 
 #paso la clase a binaria que tome valores {0,1}  enteros
 dataset[ , clase01 := ifelse( clase_ternaria=="BAJA+2", 1L, 0L) ]
@@ -34,7 +34,7 @@ modelo  <- lgb.train( data= dtrain,
 
 
 #aplico el modelo a los datos sin clase
-dapply  <- fread("./datasetsOri/paquete_premium_202011.csv")
+dapply  <- fread("./datasets_ori/paquete_premium_202011.csv")
 
 #aplico el modelo a los datos nuevos
 prediccion  <- predict( modelo, 
@@ -47,5 +47,5 @@ entrega  <- as.data.table( list( "numero_de_cliente"= dapply[  , numero_de_clien
 
 #genero el archivo para Kaggle
 fwrite( entrega, 
-        file= "./kaggle/lightgbm_611.csv", 
+        file= "./kaggle/lightgbm.csv", 
         sep= "," )

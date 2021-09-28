@@ -38,7 +38,7 @@ setwd( directory.root )
 
 kexperimento  <- 1   #NA si se corre la primera vez, un valor concreto si es para continuar procesando
 
-kscript           <- "682_lgb_prob_auto"
+kscript           <- "682_lgb_prob_auto_copy"
 karch_generacion  <- "./datasets_ori/paquete_premium_202009.csv"
 karch_aplicacion  <- "./datasets_ori/paquete_premium_202011.csv"
 kBO_iter    <-  150   #cantidad de iteraciones de la Optimizacion Bayesiana
@@ -130,7 +130,7 @@ EstimarGanancia_lightgbm  <- function( x )
   kfolds  <- 5   # cantidad de folds para cross validation
 
   param_basicos  <- list( objective= "binary",
-                          metric= "custom",
+                          metric= 'auc',
                           first_metric_only= TRUE,
                           boost_from_average= TRUE,
                           feature_pre_filter= FALSE,
