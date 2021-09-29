@@ -53,7 +53,7 @@ hs <- makeParamSet(
 
 campos_malos  <- c('internet','tpaquete1','tmobile_app','cmobile_app_trx')   #aqui se deben cargar todos los campos culpables del Data Drifting
 
-ksemilla_azar  <- 10009  #Aqui poner la propia semilla
+ksemilla_azar  <- 57689  #Aqui poner la propia semilla
 #------------------------------------------------------------------------------
 #Funcion que lleva el registro de los experimentos
 
