@@ -40,9 +40,10 @@ setwd( directory.root )
 kexperimento  <- NA   #NA si se corre la primera vez, un valor concreto si es para continuar procesando
 
 kscript           <- "672_lgb_binaria2"
-karch_generacion  <- "./datasets_ori/paquete_premium_202009.csv"
-karch_aplicacion  <- "./datasets_ori/paquete_premium_202011.csv"
-kBO_iter    <-  150   #cantidad de iteraciones de la Optimizacion Bayesiana
+karch_generacion  <- "./datasets/fe_202009.csv"
+karch_aplicacion  <- "./datasets/fe_202011.csv"
+karch_aplicacion_ori <- "./datasets_ori/paquete_premium_202011.csv"
+kBO_iter    <-  250   #cantidad de iteraciones de la Optimizacion Bayesiana
 
 #Aqui se cargan los hiperparametros
 hs <- makeParamSet( 
@@ -50,17 +51,13 @@ hs <- makeParamSet(
          makeNumericParam("feature_fraction", lower= 0.2  , upper=    1.0),
          makeIntegerParam("min_data_in_leaf", lower= 0    , upper= 8000),
          makeIntegerParam("num_leaves",       lower=16L   , upper= 1024L),
-         makeNumericParam("prob_corte",       lower= 0.020, upper=    0.055)
+         makeNumericParam("prob_corte",       lower= 0.020, upper=    0.055),
+         makeNumericParam("min_gain_to_split",lower= 0.0,   upper= 100.0),
+         makeNumericParam("lambda_l1",        lower= 0.0,   upper= 100.0),
+         makeNumericParam("lambda_l2",        lower= 0.0,   upper= 100.0)
+         #makeIntegerParam("max_bin",          lower=15L,     upper=1023L)
         )
 
-#campos_malos  <- c( "ccajas_transacciones", "Master_mpagominimo" )   #aqui se deben cargar todos los campos culpables del Data Drifting
-
-campos_malos = c(
-    'internet','tpaquete1','tmobile_app','cmobile_app_trx',
-    'mtarjeta_visa_descuentos','mtarjeta_visa_descuentos',
-    'ctarjeta_visa_descuentos','ctarjeta_master_descuentos', 
-    'mtarjeta_master_descuentos'
-)
 
 ksemilla_azar  <- 102191  #Aqui poner la propia semilla
 #------------------------------------------------------------------------------
@@ -142,10 +139,7 @@ EstimarGanancia_lightgbm  <- function( x )
                           verbosity= -100,
                           seed= 999983,
                           max_depth=  -1,         # -1 significa no limitar,  por ahora lo dejo fijo
-                          min_gain_to_split= 0.0, #por ahora, lo dejo fijo
-                          lambda_l1= 0.0,         #por ahora, lo dejo fijo
-                          lambda_l2= 0.0,         #por ahora, lo dejo fijo
-                          max_bin= 31,            #por ahora, lo dejo fijo
+                          max_bin=31,
                           num_iterations= 9999,    #un numero muy grande, lo limita early_stopping_rounds
                           force_row_wise= TRUE    #para que los alumnos no se atemoricen con tantos warning
                         )
@@ -191,11 +185,11 @@ EstimarGanancia_lightgbm  <- function( x )
             file= paste0(kimp, "imp_", GLOBAL_iteracion, ".txt"),
             sep="\t" )
 
-     prediccion  <- predict( modelo, data.matrix( dapply[  , campos_buenos, with=FALSE]) )
+     prediccion  <- predict( modelo, data.matrix(dapply) )
 
      Predicted  <- as.integer( prediccion > x$prob_corte )
 
-     entrega  <- as.data.table( list( "numero_de_cliente"= dapply$numero_de_cliente, 
+     entrega  <- as.data.table( list( "numero_de_cliente"= dapply_ori$numero_de_cliente, 
                                       "Predicted"= Predicted)  )
 
      #genero el archivo para Kaggle
@@ -236,86 +230,25 @@ if( file.exists(klog) )
 
 
 #cargo el dataset donde voy a entrenar el modelo
-dataset  <- fread(karch_generacion)
+dataset  <- fread(karch_generacion, stringsAsFactors= TRUE)
 
-#creo la clase_binaria2   1={ BAJA+2,BAJA+1}  0={CONTINUA}
-dataset[ , clase01:= ifelse( clase_ternaria=="CONTINUA", 0, 1 ) ]
-
-dataset$rentabilidad_prom = dataset$mrentabilidad_annual / dataset$cliente_antiguedad
-dataset$mcomisiones_prom = dataset$mrentabilidad_annual / dataset$cliente_antiguedad
-dataset$mpasivos_margen_t = sqrt(dataset$mpasivos_margen**2)
-dataset$mrentabilidad_t = sqrt(dataset$mrentabilidad**2)
-dataset$mrentabilidad_annual_t = sqrt(dataset$mrentabilidad_annual**2)
-dataset$mcomisiones_t = sqrt(dataset$mcomisiones**2)
-dataset$mactivos_margen_t = sqrt(dataset$mactivos_margen**2)
-dataset$rentabilidad_prom_t = sqrt(dataset$rentabilidad_prom**2)
-dataset$mcomisiones_prom_t = sqrt(dataset$mcomisiones_prom**2)
-
-dataset$Card_delinquency = dataset$Master_delinquency + dataset$Visa_delinquency
-dataset$Card_status = dataset$Master_status + dataset$Visa_status
-dataset$Card_mfinanciacion_limite = dataset$Master_mfinanciacion_limite + dataset$Visa_mfinanciacion_limite
-dataset$Card_msaldototal = dataset$Master_msaldototal + dataset$Visa_msaldototal
-dataset$Card_msaldopesos = dataset$Master_msaldopesos + dataset$Visa_msaldopesos
-dataset$Card_msaldodolares = dataset$Master_msaldodolares + dataset$Visa_msaldodolares
-dataset$Card_mconsumospesos = dataset$Master_mconsumospesos + dataset$Visa_mconsumospesos
-dataset$Card_mconsumosdolares = dataset$Master_mconsumosdolares + dataset$Visa_mconsumosdolares
-dataset$Card_mlimitecompra = dataset$Master_mlimitecompra + dataset$Visa_mlimitecompra
-dataset$Card_madelantopesos = dataset$Master_madelantopesos + dataset$Visa_madelantopesos
-dataset$Card_madelantodolares = dataset$Master_madelantodolares + dataset$Visa_madelantodolares
-dataset$Card_mpagado = dataset$Master_mpagado + dataset$Visa_mpagado
-dataset$Card_mpagospesos = dataset$Master_mpagospesos + dataset$Visa_mpagospesos
-dataset$Card_mpagosdolares = dataset$Master_mpagosdolares + dataset$Visa_mpagosdolares
-dataset$Card_mconsumototal = dataset$Master_mconsumototal + dataset$Visa_mconsumototal
-dataset$Card_cconsumos = dataset$Master_cconsumos + dataset$Visa_cconsumos
-dataset$Card_cadelantosefectivo = dataset$Master_cadelantosefectivo + dataset$Visa_cadelantosefectivo
-dataset$Card_mpagominimo = dataset$Master_mpagominimo + dataset$Visa_mpagominimo
-
-
-
-#los campos que se van a utilizar
-campos_buenos  <- setdiff( colnames(dataset), c("clase_ternaria","clase01", campos_malos) )
+dataset = dataset[,2:272]
 
 #dejo los datos en el formato que necesita LightGBM
 #uso el weight como un truco ESPANTOSO para saber la clase real
-dtrain  <- lgb.Dataset( data= data.matrix(  dataset[ , campos_buenos, with=FALSE]),
-                        label= dataset$clase01,
-                        weight=  dataset[ , ifelse(clase_ternaria=="BAJA+2", 1.0000001, 1.0)] )
+dtrain  <- lgb.Dataset( data= data.matrix(  dataset[, !"clase_binaria"]  ),
+                        label= dataset$clase_binaria,
+                        weight=  dataset[ , ifelse(clase_binaria==1, 1.0000001, 1.0)] )
 
 
 #cargo los datos donde voy a aplicar el modelo
 dapply  <- fread(karch_aplicacion, stringsAsFactors= TRUE) #leo los datos donde voy a aplicar el modelo
+dapply = dapply[,2:271]
 
-dapply$rentabilidad_prom = dapply$mrentabilidad_annual / dapply$cliente_antiguedad
-dapply$mcomisiones_prom = dapply$mrentabilidad_annual / dapply$cliente_antiguedad
-dapply$mpasivos_margen_t = sqrt(dapply$mpasivos_margen**2)
-dapply$mrentabilidad_t = sqrt(dapply$mrentabilidad**2)
-dapply$mrentabilidad_annual_t = sqrt(dapply$mrentabilidad_annual**2)
-dapply$mcomisiones_t = sqrt(dapply$mcomisiones**2)
-dapply$mactivos_margen_t = sqrt(dapply$mactivos_margen**2)
-dapply$rentabilidad_prom_t = sqrt(dapply$rentabilidad_prom**2)
-dapply$mcomisiones_prom_t = sqrt(dapply$mcomisiones_prom**2)
+dapply_ori = fread(karch_aplicacion_ori, stringsAsFactors= TRUE)
 
-dapply$Card_delinquency = dapply$Master_delinquency + dapply$Visa_delinquency
-dapply$Card_status = dapply$Master_status + dapply$Visa_status
-dapply$Card_mfinanciacion_limite = dapply$Master_mfinanciacion_limite + dapply$Visa_mfinanciacion_limite
-dapply$Card_msaldototal = dapply$Master_msaldototal + dapply$Visa_msaldototal
-dapply$Card_msaldopesos = dapply$Master_msaldopesos + dapply$Visa_msaldopesos
-dapply$Card_msaldodolares = dapply$Master_msaldodolares + dapply$Visa_msaldodolares
-dapply$Card_mconsumospesos = dapply$Master_mconsumospesos + dapply$Visa_mconsumospesos
-dapply$Card_mconsumosdolares = dapply$Master_mconsumosdolares + dapply$Visa_mconsumosdolares
-dapply$Card_mlimitecompra = dapply$Master_mlimitecompra + dapply$Visa_mlimitecompra
-dapply$Card_madelantopesos = dapply$Master_madelantopesos + dapply$Visa_madelantopesos
-dapply$Card_madelantodolares = dapply$Master_madelantodolares + dapply$Visa_madelantodolares
-dapply$Card_mpagado = dapply$Master_mpagado + dapply$Visa_mpagado
-dapply$Card_mpagospesos = dapply$Master_mpagospesos + dapply$Visa_mpagospesos
-dapply$Card_mpagosdolares = dapply$Master_mpagosdolares + dapply$Visa_mpagosdolares
-dapply$Card_mconsumototal = dapply$Master_mconsumototal + dapply$Visa_mconsumototal
-dapply$Card_cconsumos = dapply$Master_cconsumos + dapply$Visa_cconsumos
-dapply$Card_cadelantosefectivo = dapply$Master_cadelantosefectivo + dapply$Visa_cadelantosefectivo
-dapply$Card_mpagominimo = dapply$Master_mpagominimo + dapply$Visa_mpagominimo
 
 #Aqui comienza la configuracion de la Bayesian Optimization
-
 
 funcion_optimizar  <- EstimarGanancia_lightgbm   #la funcion que voy a maximizar
 

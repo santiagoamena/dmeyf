@@ -47,7 +47,7 @@ gc()
 library("data.table")
 library("lightgbm")
 
-carpeta_datasetsOri <-  "../../../datasetsOri/"
+carpeta_datasetsOri <-  "C:/Users/santi/projects/maestria/dmef/datasets_ori/"
 septiembre <- "paquete_premium_202009.csv"
 
 
@@ -64,8 +64,14 @@ Lo primero que tenemos que hacer es armar un modelo.
 library(xgboost)
 
 dtrain <- xgb.DMatrix(data=data.matrix(ds), label=  clase_binaria, missing=NA)
-param_fe <- list(max_depth=2, eta=1, silent=1, objective='binary:logistic')
-nrounds = 5
+param_fe <- list(objective = "binary:logistic",
+                scale_pos_weight=160.201198630137,
+                eta = 0.09723526495894,
+                max_depth = 3,
+                min_child_weight=6,
+                gamma=232,
+                max_bin=15)
+nrounds = 100
 
 bst = xgb.train(params = param_fe, data = dtrain, nrounds = nrounds)
 
@@ -75,8 +81,17 @@ Luego se generan las *features* extras
 
 ```{r}
 
-new.features.train <- xgb.create.features(model = bst, data.matrix(ds))
-colnames(new.features.train)[150:173]
+xgb_create_features <- function(model, data) {
+  pred_with_leaf <- predict(bst, data, predleaf = TRUE)
+  cols           <- lapply(as.data.frame(pred_with_leaf), factor)
+  cbind(data, cols)
+}
+
+df = data.matrix(ds)
+pred_with_leaf <- predict(bst, df, predleaf = TRUE)
+cols           <- lapply(as.data.frame(pred_with_leaf), factor)
+cols_df = as.data.frame(cols)
+new_features_train = cbind(ds, cols_df)
 
 ```
 
