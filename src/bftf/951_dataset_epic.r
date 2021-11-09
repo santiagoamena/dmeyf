@@ -17,7 +17,8 @@ require("lightgbm")
 
 
 #defino la carpeta donde trabajo
-directory.root  <-  "~/buckets/b1/"  #Google Cloud
+#directory.root  <-  "~/buckets/b1/"  #Google Cloud
+directory.root = "C:/Users/santi/projects/maestria/dmef"
 setwd( directory.root )
 
 palancas  <- list()  #variable con las palancas para activar/desactivar
@@ -32,21 +33,25 @@ palancas$nuevasvars <-  FALSE  #si quiero hacer Feature Engineering manual
 
 palancas$dummiesNA  <-  FALSE #La idea de Santiago Dellachiesa
 
-palancas$lag1   <- FALSE    #lag de orden 1
-palancas$delta1 <- FALSE    # campo -  lag de orden 1 
+palancas$lag1   <- TRUE    #lag de orden 1
+palancas$delta1 <- TRUE    # campo -  lag de orden 1 
 palancas$lag2   <- FALSE
 palancas$delta2 <- FALSE
-palancas$lag3   <- FALSE
-palancas$delta3 <- FALSE
+palancas$lag3   <- TRUE
+palancas$delta3 <- TRUE
 palancas$lag4   <- FALSE
 palancas$delta4 <- FALSE
 palancas$lag5   <- FALSE
 palancas$delta5 <- FALSE
-palancas$lag6   <- FALSE
-palancas$delta6 <- FALSE
+palancas$lag6   <- TRUE
+palancas$delta6 <- TRUE
+palancas$lag9   <- TRUE
+palancas$delta9 <- TRUE
+palancas$lag12   <- TRUE
+palancas$delta12 <- TRUE
 
-palancas$promedio3  <- FALSE  #promedio  de los ultimos 3 meses
-palancas$promedio6  <- FALSE
+palancas$promedio3  <- TRUE  #promedio  de los ultimos 3 meses
+palancas$promedio6  <- TRUE
 
 palancas$minimo3  <- FALSE  #minimo de los ultimos 3 meses
 palancas$minimo6  <- FALSE
@@ -57,10 +62,10 @@ palancas$maximo6  <- FALSE
 palancas$ratiomax3   <- FALSE   #La idea de Daiana Sparta
 palancas$ratiomean6  <- FALSE   #Un derivado de la idea de Daiana Sparta
 
-palancas$tendencia6  <- FALSE    #Great power comes with great responsability
+palancas$tendencia6  <- TRUE    #Great power comes with great responsability
 
 
-palancas$canaritosimportancia  <- FALSE  #si me quedo solo con lo mas importante de canaritosimportancia
+palancas$canaritosimportancia  <- TRUE  #si me quedo solo con lo mas importante de canaritosimportancia
 
 
 #escribo para saber cuales fueron los parametros
@@ -619,6 +624,8 @@ correr_todo  <- function( palancas )
   if( palancas$lag4 )   Lags( dataset, cols_analiticas, 4, palancas$delta4 )
   if( palancas$lag5 )   Lags( dataset, cols_analiticas, 5, palancas$delta5 )
   if( palancas$lag6 )   Lags( dataset, cols_analiticas, 6, palancas$delta6 )
+  if( palancas$lag9 )   Lags( dataset, cols_analiticas, 9, palancas$delta6 )
+  if( palancas$lag12 )  Lags( dataset, cols_analiticas, 12, palancas$delta6 )
 
   if( palancas$promedio3 )  Promedios( dataset, cols_analiticas, 3 )
   if( palancas$promedio6 )  Promedios( dataset, cols_analiticas, 6 )
