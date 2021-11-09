@@ -15,15 +15,16 @@ require("rlist")
 require("yaml")
 
 require("lightgbm")
+require("xgboost")
 
 
 #defino la carpeta donde trabajo
-directory.root  <-  "~/buckets/b1/"  #Google Cloud
+directory.root  <-  "C:/Users/santi/projects/maestria/dmef"  #Google Cloud
 setwd( directory.root )
 
 palancas  <- list()  #variable con las palancas para activar/desactivar
 
-palancas$version  <- "v007"   #Muy importante, ir cambiando la version
+palancas$version  <- "v009"   #Muy importante, ir cambiando la version
 
 palancas$variablesdrift  <- c("ccajas_transacciones", "Master_mpagominimo" )   #aqui van las columnas que se quieren eliminar
 
@@ -255,7 +256,7 @@ AgregarVariables  <- function( dataset )
   dataset[ , mv_mconsumototal        := rowSums( cbind( Master_mconsumototal,  Visa_mconsumototal) , na.rm=TRUE ) ]
   dataset[ , mv_cconsumos            := rowSums( cbind( Master_cconsumos,  Visa_cconsumos) , na.rm=TRUE ) ]
   dataset[ , mv_cadelantosefectivo   := rowSums( cbind( Master_cadelantosefectivo,  Visa_cadelantosefectivo) , na.rm=TRUE ) ]
-  dataset[ , mv_mpagominimo          := rowSums( cbind( Master_mpagominimo,  Visa_mpagominimo) , na.rm=TRUE ) ]
+  #dataset[ , mv_mpagominimo          := rowSums( cbind( Master_mpagominimo,  Visa_mpagominimo) , na.rm=TRUE ) ]
 
   #a partir de aqui juego con la suma de Mastercard y Visa
   dataset[ , mvr_Master_mlimitecompra:= Master_mlimitecompra / mv_mlimitecompra ]
@@ -273,9 +274,45 @@ AgregarVariables  <- function( dataset )
   dataset[ , mvr_mpagospesos         := mv_mpagospesos / mv_mlimitecompra ]
   dataset[ , mvr_mpagosdolares       := mv_mpagosdolares / mv_mlimitecompra ]
   dataset[ , mvr_mconsumototal       := mv_mconsumototal  / mv_mlimitecompra ]
-  dataset[ , mvr_mpagominimo         := mv_mpagominimo  / mv_mlimitecompra ]
-
+  #dataset[ , mvr_mpagominimo         := mv_mpagominimo  / mv_mlimitecompra ]
+  
+  
   #Aqui debe usted agregar sus propias nuevas variables
+  
+  dataset$rentabilidad_prom = dataset$mrentabilidad_annual / dataset$cliente_antiguedad
+  dataset$mcomisiones_prom = dataset$mrentabilidad_annual / dataset$cliente_antiguedad
+  dataset$mpasivos_margen_t = sqrt(dataset$mpasivos_margen**2)
+  dataset$mrentabilidad_t = sqrt(dataset$mrentabilidad**2)
+  dataset$mrentabilidad_annual_t = sqrt(dataset$mrentabilidad_annual**2)
+  dataset$mcomisiones_t = sqrt(dataset$mcomisiones**2)
+  dataset$mactivos_margen_t = sqrt(dataset$mactivos_margen**2)
+  dataset$rentabilidad_prom_t = sqrt(dataset$rentabilidad_prom**2)
+  dataset$mcomisiones_prom_t = sqrt(dataset$mcomisiones_prom**2)
+  
+  vars_importantes = c(
+    'ctrx_quarter',
+    'cpayroll_trx',
+    'mcuentas_saldo',
+    'ctarjeta_visa_transacciones',
+    'mactivos_margen_t',
+    'mpasivos_margen_t',
+    'mprestamos_personales',
+    'Master_Fvencimiento',
+    'Visa_Fvencimiento',
+    'mpasivos_margen'
+  )
+
+  dataset = as.data.frame(dataset)
+  for (i in seq(length(vars_importantes))){
+    for (j in seq(length(vars_importantes))){
+      newcol = paste0('newvar_',i,'_',j)
+      dataset[,newcol] = dataset[, vars_importantes[i]]*dataset[, vars_importantes[j]]
+    }
+  }
+  dataset = as.data.table(dataset)
+
+
+
 
   #valvula de seguridad para evitar valores infinitos
   #paso los infinitos a NULOS
@@ -288,6 +325,9 @@ AgregarVariables  <- function( dataset )
   }
 
 
+
+  
+
   #valvula de seguridad para evitar valores NaN  que es 0/0
   #paso los NaN a 0 , decision polemica si las hay
   #se invita a asignar un valor razonable segun la semantica del campo creado
@@ -299,6 +339,9 @@ AgregarVariables  <- function( dataset )
     cat( "Si no te gusta la decision, modifica a gusto el programa!\n\n")
     dataset[mapply(is.nan, dataset)] <- 0
   }
+  
+  
+
 
   ReportarCampos( dataset )
 }
@@ -569,8 +612,41 @@ CanaritosImportancia  <- function( dataset )
 correr_todo  <- function( palancas )
 {
   #cargo el dataset ORIGINAL
-  dataset1  <- fread( "./datasetsOri/paquete_premium_202009.csv")
-  dataset2  <- fread( "./datasetsOri/paquete_premium_202011.csv")
+  dataset1  <- fread( "./datasets_ori/paquete_premium_202009.csv")
+  dataset2  <- fread( "./datasets_ori/paquete_premium_202011.csv")
+  
+  #Variables xgboost
+  dataset1 = as.data.frame(dataset1)
+  dataset2 = as.data.frame(dataset2)
+  df = dataset1[, !names(dataset1) %in% c("clase_ternaria")]
+  df11 = dataset2[, !names(dataset2) %in% c("clase_ternaria")]
+  clase_binaria <- ifelse(dataset1$clase_ternaria == "CONTINUA", 0, 1)
+  dtrain <- xgb.DMatrix(data=data.matrix(df), label=clase_binaria, missing=NA)
+  
+  bst = xgb.train(data = dtrain,
+                  verbose =0,  
+                  #maximize = TRUE, 
+                  params = list(objective = "binary:logistic",
+                                eta = 0.1,
+                                max_depth = 3,
+                                min_child_weight=6,
+                                gamma=232,
+                                max_bin=15),
+                  nrounds=100)
+  
+  ds = data.matrix(df)
+  pred_with_leaf <- predict(bst, ds, predleaf = TRUE)
+  cols           <- lapply(as.data.frame(pred_with_leaf), factor)
+  cols_df = as.data.frame(cols)
+  dataset1 = cbind(dataset1, cols_df)
+  dataset1 = as.data.table(dataset1) 
+  
+  ds = data.matrix(df11)
+  pred_with_leaf <- predict(bst, ds, predleaf = TRUE)
+  cols           <- lapply(as.data.frame(pred_with_leaf), factor)
+  cols_df = as.data.frame(cols)
+  dataset2 = cbind(dataset2, cols_df)
+  dataset2 = as.data.table(dataset2)   
 
   dataset   <- rbind( dataset1, dataset2 )
   rm( dataset1, dataset2 )
@@ -587,7 +663,7 @@ correr_todo  <- function( palancas )
   if( palancas$corregir )  Corregir( dataset )  #esta linea debe ir DESPUES de  DummiesNA
 
   if( palancas$nuevasvars )  AgregarVariables( dataset )
-
+  
   cols_analiticas  <- setdiff( colnames(dataset),  c("numero_de_cliente","foto_mes","mes","clase_ternaria") )
 
   if( palancas$lag1 )   Lags( dataset, cols_analiticas, 1, palancas$delta1 )
@@ -632,6 +708,6 @@ correr_todo  <- function( palancas )
 correr_todo( palancas )
 
 
-quit( save="no" )
+#quit( save="no" )
 
 

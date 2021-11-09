@@ -370,4 +370,14 @@ if(!file.exists(kbayesiana)) {
 } else {
   run  <- mboContinue( kbayesiana )   #retomo en caso que ya exista
 }
+library('data.table')
+df = fread("C:/Users/santi/projects/maestria/dmef/modelitos/E1047_modelitos.csv.gz")
+str(df)
 
+df = df[df$foto_mes == 202011,]
+df = subset(df, select=c(numero_de_cliente, E1047_328))
+str(df)
+
+fwrite( df,
+        paste0( "./kaggle/E1047.csv"),
+        sep= "," )
