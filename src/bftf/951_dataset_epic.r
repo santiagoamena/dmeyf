@@ -283,6 +283,85 @@ AgregarVariables  <- function( dataset )
   dataset[ , mvr_mpagominimo         := mv_mpagominimo  / mv_mlimitecompra ]
 
   #Aqui debe usted agregar sus propias nuevas variables
+  cols_inflacion = c(
+    'mrentabilidad_annual',
+    'mcomisiones',
+    'mactivos_margen',
+    'mpasivos_margen',
+    'mcuenta_corriente_adicional',
+    'mcuenta_corriente',
+    'mcaja_ahorro',
+    'mcaja_ahorro_adicional',
+    'mcaja_ahorro_dolares',
+    'mdescubierto_preacordado',
+    'mcuentas_saldo',
+    'mautoservicio',
+    'mtarjeta_visa_consumo',
+    'mtarjeta_master_consumo',
+    'mprestamos_personales',
+    'mprestamos_prendarios',
+    'mprestamos_hipotecarios',
+    'mplazo_fijo_dolares',
+    'mplazo_fijo_pesos',
+    'minversion1_pesos',
+    'minversion1_dolares',
+    'minversion2',
+    'mpayroll',
+    'mpayroll2',
+    'mcuenta_debitos_automaticos',
+    'mtarjeta_visa_debitos_automaticos',
+    'mttarjeta_master_debitos_automaticos',
+    'mpagodeservicios',
+    'mpagomiscuentas',
+    'mcajeros_propios_descuentos',
+    'mtarjeta_visa_descuentos',
+    'mtarjeta_master_descuentos',
+    'mcomisiones_mantenimiento',
+    'mcomisiones_otras',
+    'mforex_buy',
+    'mforex_sell',
+    'mtransferencias_recibidas',
+    'mtransferencias_emitidas',
+    'mextraccion_autoservicio',
+    'mcheques_depositados',
+    'mcheques_emitidos',
+    'mcheques_depositados_rechazados',
+    'mcheques_emitidos_rechazados',
+    'matm',
+    'matm_other',
+    'Master_msaldototal',
+    'Master_msaldopesos',
+    'Master_msaldodolares',
+    'Master_mconsumospesos',
+    'Master_mconsumosdolares',
+    'Master_mlimitecompra',
+    'Master_madelantopesos',
+    'Master_madelantodolares',
+    'Master_mpagado',
+    'Master_mpagospesos',
+    'Master_mpagosdolares',
+    'Master_mconsumototal',
+    'Master_mpagominimo',
+    'Visa_mfinanciacion_limite',
+    'Visa_msaldototal',
+    'Visa_msaldopesos',
+    'Visa_msaldodolares',
+    'Visa_mconsumospesos',
+    'Visa_mconsumosdolares',
+    'Visa_mlimitecompra',
+    'Visa_madelantopesos',
+    'Visa_madelantodolares',
+    'Visa_mpagado',
+    'Visa_mpagospesos',
+    'Visa_mpagosdolares',
+    'Visa_mconsumototal',
+    'Visa_mpagominimo',
+  )
+
+  sufijo  <- paste0( "_inf" )
+  dataset[ , paste0( cols_inflacion, sufijo) := lapply(.SD, function(x) x - mean(x) / sd(x)), 
+             by= foto_mes, 
+             .SDcols= cols]
 
   #valvula de seguridad para evitar valores infinitos
   #paso los infinitos a NULOS
@@ -602,8 +681,8 @@ CanaritosImportancia  <- function( dataset )
 correr_todo  <- function( palancas )
 {
   #cargo el dataset ORIGINAL
+  #dataset  <- fread( "./datasetsOri/paquete_premium.csv.gz")
   dataset  <- fread( "./datasetsOri/paquete_premium.csv.gz")
-
   setorder(  dataset, numero_de_cliente, foto_mes )  #ordeno el dataset
 
   AgregarMes( dataset )  #agrego el mes del año
