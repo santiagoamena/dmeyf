@@ -17,8 +17,8 @@ require("lightgbm")
 
 
 #defino la carpeta donde trabajo
-#directory.root  <-  "~/buckets/b1/"  #Google Cloud
-directory.root = "C:/Users/santi/projects/maestria/dmef"
+directory.root  <-  "~/buckets/b1/"  #Google Cloud
+#directory.root = "C:/Users/santi/projects/maestria/dmef"
 setwd( directory.root )
 
 palancas  <- list()  #variable con las palancas para activar/desactivar
@@ -681,8 +681,9 @@ CanaritosImportancia  <- function( dataset )
 correr_todo  <- function( palancas )
 {
   #cargo el dataset ORIGINAL
-  #dataset  <- fread( "./datasetsOri/paquete_premium.csv.gz")
   dataset  <- fread( "./datasetsOri/paquete_premium.csv.gz")
+  #dataset  <- fread( "./datasets_ori/paquete_premium.csv.gz")
+  #dataset = dataset[ foto_mes >= 202007 & foto_mes <= 202011 ]
   setorder(  dataset, numero_de_cliente, foto_mes )  #ordeno el dataset
 
   AgregarMes( dataset )  #agrego el mes del año
