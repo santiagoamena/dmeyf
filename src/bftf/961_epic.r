@@ -39,8 +39,6 @@ switch ( Sys.info()[['sysname']],
 #defino la carpeta donde trabajo
 setwd( directory.root )
 
-
-
 kexperimento  <- NA   #NA si se corre la primera vez, un valor concreto si es para continuar procesando
 
 kscript         <- "961_epic"

@@ -23,13 +23,13 @@ setwd( directory.root )
 
 palancas  <- list()  #variable con las palancas para activar/desactivar
 
-palancas$version  <- "v951"   #Muy importante, ir cambiando la version
+palancas$version  <- "v952"   #Muy importante, ir cambiando la version
 
-palancas$variablesdrift  <- c()   #aqui van las columnas que se quieren eliminar
+palancas$variablesdrift  <- c("ccajas_transacciones", "Master_mpagominimo", "internet")   #aqui van las columnas que se quieren eliminar
 
 palancas$corregir <-  TRUE    # TRUE o FALSE
 
-palancas$nuevasvars <-  FALSE  #si quiero hacer Feature Engineering manual
+palancas$nuevasvars <-  TRUE  #si quiero hacer Feature Engineering manual
 
 palancas$dummiesNA  <-  FALSE #La idea de Santiago Dellachiesa
 
@@ -45,13 +45,13 @@ palancas$lag5   <- FALSE
 palancas$delta5 <- FALSE
 palancas$lag6   <- TRUE
 palancas$delta6 <- TRUE
-palancas$lag9   <- TRUE
-palancas$delta9 <- TRUE
-palancas$lag12   <- TRUE
-palancas$delta12 <- TRUE
+palancas$lag9   <- FALSE
+palancas$delta9 <- FALSE
+palancas$lag12   <- FALSE
+palancas$delta12 <- FALSE
 
 palancas$promedio3  <- TRUE  #promedio  de los ultimos 3 meses
-palancas$promedio6  <- TRUE
+palancas$promedio6  <- FALSE
 
 palancas$minimo3  <- FALSE  #minimo de los ultimos 3 meses
 palancas$minimo6  <- FALSE
@@ -341,7 +341,7 @@ AgregarVariables  <- function( dataset )
     'Master_mpagospesos',
     'Master_mpagosdolares',
     'Master_mconsumototal',
-    'Master_mpagominimo',
+    #'Master_mpagominimo',
     'Visa_mfinanciacion_limite',
     'Visa_msaldototal',
     'Visa_msaldopesos',
