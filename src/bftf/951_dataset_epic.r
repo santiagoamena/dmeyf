@@ -361,7 +361,7 @@ AgregarVariables  <- function( dataset )
   sufijo  <- paste0( "_inf" )
   dataset[ , paste0( cols_inflacion, sufijo) := lapply(.SD, function(x) x - mean(x) / sd(x)), 
              by= foto_mes, 
-             .SDcols= cols]
+             .SDcols= cols_inflacion]
 
   #valvula de seguridad para evitar valores infinitos
   #paso los infinitos a NULOS
