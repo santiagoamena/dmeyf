@@ -355,7 +355,7 @@ AgregarVariables  <- function( dataset )
     'Visa_mpagospesos',
     'Visa_mpagosdolares',
     'Visa_mconsumototal',
-    'Visa_mpagominimo',
+    'Visa_mpagominimo'
   )
 
   sufijo  <- paste0( "_inf" )
