@@ -17,13 +17,13 @@ require("lightgbm")
 
 
 #defino la carpeta donde trabajo
-directory.root  <-  "~/buckets/b1/"  #Google Cloud
-#directory.root = "C:/Users/santi/projects/maestria/dmef"
+#directory.root  <-  "~/buckets/b1/"  #Google Cloud
+directory.root = "C:/Users/santi/projects/maestria/dmef"
 setwd( directory.root )
 
 palancas  <- list()  #variable con las palancas para activar/desactivar
 
-palancas$version  <- "v953"   #Muy importante, ir cambiando la version
+palancas$version  <- "v954"   #Muy importante, ir cambiando la version
 
 palancas$variablesdrift  <- c("ccajas_transacciones", "Master_mpagominimo", "internet")   #aqui van las columnas que se quieren eliminar
 
@@ -668,7 +668,10 @@ CanaritosImportancia  <- function( dataset )
 
   for( col in col_inutiles )
   {
-    dataset[  ,  paste0(col) := NULL ]
+    if ( col != "foto_mes") 
+    {
+      dataset[  ,  paste0(col) := NULL ]
+    }
   }
 
   rm( dtrain, dvalid )
@@ -681,8 +684,8 @@ CanaritosImportancia  <- function( dataset )
 correr_todo  <- function( palancas )
 {
   #cargo el dataset ORIGINAL
-  dataset  <- fread( "./datasetsOri/paquete_premium.csv.gz")
-  #dataset  <- fread( "./datasets_ori/paquete_premium.csv.gz")
+  #dataset  <- fread( "./datasetsOri/paquete_premium.csv.gz")
+  dataset  <- fread( "./datasets_ori/paquete_premium.csv.gz")
   #dataset = dataset[ foto_mes >= 202007 & foto_mes <= 202011 ]
   setorder(  dataset, numero_de_cliente, foto_mes )  #ordeno el dataset
 
@@ -745,7 +748,7 @@ correr_todo  <- function( palancas )
 
 correr_todo( palancas )
 
-
+ 
 quit( save="no" )
 
 
