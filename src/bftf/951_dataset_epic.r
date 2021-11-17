@@ -34,24 +34,24 @@ palancas$nuevasvars <-  TRUE  #si quiero hacer Feature Engineering manual
 palancas$dummiesNA  <-  FALSE #La idea de Santiago Dellachiesa
 
 palancas$lag1   <- FALSE    #lag de orden 1
-palancas$delta1 <- TRUE    # campo -  lag de orden 1 
+palancas$delta1 <- FALSE    # campo -  lag de orden 1 
 palancas$lag2   <- FALSE
 palancas$delta2 <- FALSE
 palancas$lag3   <- FALSE
-palancas$delta3 <- TRUE
+palancas$delta3 <- FALSE
 palancas$lag4   <- FALSE
 palancas$delta4 <- FALSE
 palancas$lag5   <- FALSE
 palancas$delta5 <- FALSE
 palancas$lag6   <- FALSE
-palancas$delta6 <- TRUE
+palancas$delta6 <- FALSE
 palancas$lag9   <- FALSE
 palancas$delta9 <- FALSE
 palancas$lag12   <- FALSE
 palancas$delta12 <- FALSE
 
 palancas$promedio3  <- TRUE  #promedio  de los ultimos 3 meses
-palancas$promedio6  <- FALSE
+palancas$promedio6  <- TRUE
 
 palancas$minimo3  <- FALSE  #minimo de los ultimos 3 meses
 palancas$minimo6  <- FALSE
