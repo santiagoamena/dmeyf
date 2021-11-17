@@ -23,9 +23,10 @@ setwd( directory.root )
 
 palancas  <- list()  #variable con las palancas para activar/desactivar
 
-palancas$version  <- "v954"   #Muy importante, ir cambiando la version
+palancas$version  <- "v955"   #Muy importante, ir cambiando la version
 
-palancas$variablesdrift  <- c("ccajas_transacciones", "Master_mpagominimo", "internet")   #aqui van las columnas que se quieren eliminar
+palancas$variablesdrift  <- c("ccajas_transacciones", "Master_mpagominimo",
+                              "tpaquete1","tpaquete2","ctarjeta_debito")   #aqui van las columnas que se quieren eliminar
 
 palancas$corregir <-  TRUE    # TRUE o FALSE
 
