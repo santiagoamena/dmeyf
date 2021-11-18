@@ -43,7 +43,7 @@ kexperimento  <- NA   #NA si se corre la primera vez, un valor concreto si es pa
 
 kscript         <- "961_epic"
 
-karch_dataset    <- "./datasets/dataset_epic_v955.csv.gz"
+karch_dataset    <- "./datasets/dataset_epic_v956.csv.gz"
 
 kapply_mes       <- c(202101)  #El mes donde debo aplicar el modelo
 
@@ -54,7 +54,10 @@ ktrain_subsampling  <- 0.1   #el undersampling que voy a hacer de los continua
 
 ktrain_mes_hasta    <- 202010  #Obviamente, solo puedo entrenar hasta 202011
 ktrain_mes_desde    <- 201901
-ktrain_meses_malos  <- c( 202006 )  #meses que quiero excluir del entrenamiento
+ktrain_meses_malos  <- c( 201801, 201802, 201803, 201804, 201805, 201806, 201807, 
+                          201808, 201809, 201810, 201811, 201812, 201901, 201902,
+                          201903, 201904, 201905, 201906, 201907, 201908, 201909,
+                          201910, 202006 )  #meses que quiero excluir del entrenamiento
 
 
 kgen_mes_hasta    <- 202011   #La generacion final para Kaggle, sin undersampling
