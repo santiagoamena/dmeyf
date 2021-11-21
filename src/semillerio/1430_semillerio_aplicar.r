@@ -21,7 +21,7 @@ x$gleaf_size   <-  68.06796187
 x$gnum_leaves  <-  0.262799168
 x$learning_rate <-  0.042624284
 x$feature_fraction <-  0.477293613
-x$num_iterations  <- 452.1
+x$num_iterations  <- 452
 
 #------------------------------------------------------------------------------
 
