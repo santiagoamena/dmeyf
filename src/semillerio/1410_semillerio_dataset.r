@@ -165,6 +165,8 @@ cols_analiticas  <- copy( setdiff( colnames(dataset),  c("numero_de_cliente","fo
 
 Lags(  cols_analiticas, 1, deltas=TRUE )
 
+Lags(  cols_analiticas, 3, deltas=TRUE )
+
 #dejo la clase como ultimo campo
 nuevo_orden  <- c( setdiff( colnames( dataset ) , "clase_ternaria" ) , "clase_ternaria" )
 setcolorder( dataset, nuevo_orden )
