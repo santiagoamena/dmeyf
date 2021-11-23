@@ -9,7 +9,7 @@ require("primes")
 
 setwd("~/buckets/b1/")
 
-karch_dataset  <- "./datasets/semillerio_dataset_lag1.csv.gz"
+karch_dataset  <- "./datasets/semillerio_dataset_lag1_lag3.csv.gz"
 ksalida  <- "semillerio" 
 
 kcantidad_semillas  <- 200
