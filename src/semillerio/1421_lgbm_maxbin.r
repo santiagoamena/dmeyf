@@ -56,7 +56,7 @@ kexperimento  <- NA #NA si se corre la primera vez, un valor concreto si es para
 
 kscript       <- "1421_lgbm_maxbin"
 
-karchivo_dataset   <-  "./datasets/semillerio_dataset_lag1.csv.gz"
+karchivo_dataset   <-  "./datasets/semillerio_dataset_lag1_lag3.csv.gz"
 
 kfecha_cutoff  <- 202001
 ktrain_desde   <- 202001
@@ -75,7 +75,10 @@ hs <- makeParamSet(
          makeNumericParam("learning_rate",    lower=   0.02   , upper=    0.2),
          makeNumericParam("feature_fraction", lower=   0.1    , upper=    1.0),
          makeNumericParam("gleaf_size",       lower=  20.0    , upper=  100.0),
-         makeNumericParam("gnum_leaves",      lower=   0.01   , upper=    1.0)
+         makeNumericParam("gnum_leaves",      lower=   0.01   , upper=    1.0),
+         makeNumericParam("min_gain_to_split", lower=    0.1  , upper=    100000),
+         makeNumericParam("lambda_l1", lower=    0.1  , upper=    100),
+         makeNumericParam("lambda_l2", lower=    0.1  , upper=    100),
         )
 
 
@@ -204,9 +207,6 @@ EstimarGanancia_lightgbm  <- function( x )
                           feature_pre_filter= FALSE,
                           verbosity= -100,
                           max_depth=  -1,         # -1 significa no limitar,  por ahora lo dejo fijo
-                          min_gain_to_split= 0.0, #por ahora, lo dejo fijo
-                          lambda_l1= 0.0,         #por ahora, lo dejo fijo
-                          lambda_l2= 0.0,         #por ahora, lo dejo fijo
                           num_iterations= 9999,   #un numero muy grande, lo limita early_stopping_rounds
                           early_stopping_rounds= 200,
                           force_row_wise= TRUE    #para que los alumnos no se atemoricen con tantos warning
