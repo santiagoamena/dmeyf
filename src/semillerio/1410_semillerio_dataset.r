@@ -167,6 +167,8 @@ Lags(  cols_analiticas, 1, deltas=TRUE )
 
 Lags(  cols_analiticas, 3, deltas=TRUE )
 
+Lags(  cols_analiticas, 6, deltas=TRUE )
+
 #dejo la clase como ultimo campo
 nuevo_orden  <- c( setdiff( colnames( dataset ) , "clase_ternaria" ) , "clase_ternaria" )
 setcolorder( dataset, nuevo_orden )
