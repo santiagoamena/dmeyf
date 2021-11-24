@@ -176,7 +176,7 @@ setcolorder( dataset, nuevo_orden )
 
 #Grabo el dataset
 fwrite( dataset,
-        paste0( "./datasets/semillerio_dataset_lag1_lag3.csv.gz" ),
+        paste0( "./datasets/semillerio_dataset_lag1_3_6.csv.gz" ),
         logical01 = TRUE,
         sep= "," )
 
