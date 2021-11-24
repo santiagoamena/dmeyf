@@ -13,7 +13,7 @@ require("lightgbm")
 
 setwd("~/buckets/b1/")
 
-karch_dataset  <- "./datasets/semillerio_dataset_lag1_lag3.csv.gz"
+karch_dataset  <- "./datasets/semillerio_dataset_lag1_3_6.csv.gz"
 ksalida  <- "semillerio" 
 
 kexperimento  <- NA

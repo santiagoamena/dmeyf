@@ -56,7 +56,7 @@ kexperimento  <- NA #NA si se corre la primera vez, un valor concreto si es para
 
 kscript       <- "1421_lgbm_maxbin"
 
-karchivo_dataset   <-  "./datasets/semillerio_dataset_lag1_lag3.csv.gz"
+karchivo_dataset   <-  "./datasets/semillerio_dataset_lag1_3_6.csv.gz"
 
 kfecha_cutoff  <- 202001
 ktrain_desde   <- 202001
@@ -76,9 +76,9 @@ hs <- makeParamSet(
          makeNumericParam("feature_fraction", lower=   0.1    , upper=    1.0),
          makeNumericParam("gleaf_size",       lower=  20.0    , upper=  100.0),
          makeNumericParam("gnum_leaves",      lower=   0.01   , upper=    1.0),
-         makeNumericParam("min_gain_to_split", lower=    0.1  , upper=    100000),
-         makeNumericParam("lambda_l1", lower=    0.1  , upper=    100),
-         makeNumericParam("lambda_l2", lower=    0.1  , upper=    100),
+         makeNumericParam("min_gain_to_split", lower=    0.0  , upper=    1.0),
+         makeNumericParam("lambda_l1", lower=    0.0  , upper=    5.0),
+         makeNumericParam("lambda_l2", lower=    0.0  , upper=    5.0),
         )
 
 
