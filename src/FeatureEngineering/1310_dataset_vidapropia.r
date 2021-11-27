@@ -22,7 +22,7 @@ setwd( directory.root )
 
 palancas  <- list()  #variable con las palancas para activar/desactivar
 
-palancas$version  <- "vidapropia_01"   #Muy importante, ir cambiando la version
+palancas$version  <- "vidapropia_02"   #Muy importante, ir cambiando la version
 
 palancas$variablesdrift  <- c()   #aqui van las columnas que se quieren eliminar
 
@@ -537,6 +537,16 @@ CanaritosImportancia  <- function( canaritos_ratio=0.2 )
 
 #cargo el dataset ORIGINAL
 dataset  <- fread( "./datasetsOri/paquete_premium.csv.gz")
+campos_buenos  <- c( "ctrx_quarter", "cpayroll_trx", "mcaja_ahorro", "mtarjeta_visa_consumo", "ctarjeta_visa_transacciones",
+                     "mcuentas_saldo", "mrentabilidad_annual", "mprestamos_personales", "mactivos_margen", "mpayroll",
+                     "Visa_mpagominimo", "Master_fechaalta", "cliente_edad", "chomebanking_transacciones", "Visa_msaldopesos",
+                     "Visa_Fvencimiento", "mrentabilidad", "Visa_msaldototal", "Master_Fvencimiento", "mcuenta_corriente",
+                     "Visa_mpagospesos", "Visa_fechaalta", "mcomisiones_mantenimiento", "Visa_mfinanciacion_limite",
+                     "mtransferencias_recibidas", "cliente_antiguedad", "Visa_mconsumospesos", "Master_mfinanciacion_limite",
+                     "mcaja_ahorro_dolares", "cproductos", "mcomisiones_otras", "thomebanking", "mcuenta_debitos_automaticos",
+                     "mcomisiones", "Visa_cconsumos", "ccomisiones_otras", "Master_status", "mtransferencias_emitidas",
+                     "mpagomiscuentas")
+dataset = dataset[ , campos_buenos, with=FALSE ]
 gc()
 
 

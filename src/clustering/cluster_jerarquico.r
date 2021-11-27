@@ -6,10 +6,11 @@ require("randomForest")
 rm( list=ls() )  #remove all objects
 gc()             #garbage collection
 
-setwd( "~/buckets/b1/" )
+#setwd( "~/buckets/b1/" )
+setwd( "C:/Users/santi/projects/maestria/dmef/" )
 
 #leo el dataset , aqui se puede usar algun super dataset con Feature Engineering
-dataset  <- fread( "datasetsOri/paquete_premium.csv.gz", stringsAsFactors= TRUE)
+dataset  <- fread( "datasets_ori/paquete_premium.csv.gz", stringsAsFactors= TRUE)
 gc()
 
 #achico el dataset
@@ -32,7 +33,6 @@ campos_buenos  <- c( "ctrx_quarter", "cpayroll_trx", "mcaja_ahorro", "mtarjeta_v
                      "mcaja_ahorro_dolares", "cproductos", "mcomisiones_otras", "thomebanking", "mcuenta_debitos_automaticos",
                      "mcomisiones", "Visa_cconsumos", "ccomisiones_otras", "Master_status", "mtransferencias_emitidas",
                      "mpagomiscuentas")
-
 
 
 #Ahora, a esperar mucho con este algoritmo del pasado que NO correr en paralelo, patetico
@@ -76,3 +76,7 @@ dataset[  , .N,  cluster2 ]  #tamaño de los clusters
 dataset[  , mean(ctrx_quarter),  cluster2 ]  #media de la variable  ctrx_quarter
 
 
+fwrite( dataset,
+        paste0( "./datasets/clustering.csv.gz" ),
+        logical01 = TRUE,
+        sep= "," )
