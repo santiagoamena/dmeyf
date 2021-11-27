@@ -537,7 +537,7 @@ CanaritosImportancia  <- function( canaritos_ratio=0.2 )
 
 #cargo el dataset ORIGINAL
 dataset  <- fread( "./datasetsOri/paquete_premium.csv.gz")
-campos_buenos  <- c( "numero_de_cliente", "foto_mes",
+campos_buenos  <- c( "numero_de_cliente", "foto_mes","clase_ternaria",
                      "ctrx_quarter", "cpayroll_trx", "mcaja_ahorro", "mtarjeta_visa_consumo", "ctarjeta_visa_transacciones",
                      "mcuentas_saldo", "mrentabilidad_annual", "mprestamos_personales", "mactivos_margen", "mpayroll",
                      "Visa_mpagominimo", "Master_fechaalta", "cliente_edad", "chomebanking_transacciones", "Visa_msaldopesos",
