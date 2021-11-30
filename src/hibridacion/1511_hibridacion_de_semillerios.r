@@ -11,8 +11,8 @@ require("yaml")
 setwd( "~/buckets/b1/" )
 
 #notar que son de experimentos distintos, y uno sumo 200 semillas y el otro apenas 70
-arch1  <- "./kaggle/E1427/meseta/E1427_s1438_200_14000.csv"
-arch2  <- "./kaggle/E1421/meseta/E1421_s1431_70_14000.csv"
+arch1  <- "./kaggle/E1427/meseta/E1029_s1431_200_12000.csv"
+arch2  <- "./kaggle/semillerio_200_12000.csv"
 
 
 kexperimento <-  NA
