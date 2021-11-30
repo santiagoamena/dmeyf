@@ -78,7 +78,7 @@ hs <- makeParamSet(
          makeNumericParam("gnum_leaves",      lower=   0.01   , upper=    1.0),
          makeNumericParam("min_gain_to_split", lower=    0.0  , upper=    1.0),
          makeNumericParam("lambda_l1", lower=    0.0  , upper=    5.0),
-         makeNumericParam("lambda_l2", lower=    0.0  , upper=    5.0),
+         makeNumericParam("lambda_l2", lower=    0.0  , upper=    5.0)
         )
 
 

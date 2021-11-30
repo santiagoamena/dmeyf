@@ -22,7 +22,7 @@ setwd( directory.root )
 
 palancas  <- list()  #variable con las palancas para activar/desactivar
 
-palancas$version  <- "vidapropia_02"   #Muy importante, ir cambiando la version
+palancas$version  <- "vidapropia_04"   #Muy importante, ir cambiando la version
 
 palancas$variablesdrift  <- c()   #aqui van las columnas que se quieren eliminar
 
@@ -38,10 +38,10 @@ palancas$lag2   <- TRUE
 palancas$delta2 <- TRUE
 palancas$lag3   <- TRUE
 palancas$delta3 <- TRUE
-palancas$lag4   <- TRUE
-palancas$delta4 <- TRUE
-palancas$lag5   <- TRUE
-palancas$delta5 <- TRUE
+palancas$lag4   <- FALSE
+palancas$delta4 <- FALSE
+palancas$lag5   <- FALSE
+palancas$delta5 <- FALSE
 palancas$lag6   <- TRUE
 palancas$delta6 <- TRUE
 
@@ -568,7 +568,7 @@ if( palancas$nuevasvars )  AgregarVariables( dataset )
 cols_analiticas  <- copy( setdiff( colnames(dataset),  c("numero_de_cliente","foto_mes","mes","clase_ternaria") ) )
 if( palancas$tendenciaYmuchomas )  TendenciaYmuchomas( dataset, cols_analiticas)
 
-if( palancas$lag1 )   Lags(  cols_analiticas, 1, palancas$delta1 )
+if( palancas$lag1 )   Lags(  cols_analiticas, 6, palancas$delta1 )
 
 #hay una cantidad muy grande de variables, no soporto la presion
 CanaritosImportancia( canaritos_ratio= 0.2 )
@@ -579,27 +579,27 @@ CanaritosImportancia( canaritos_ratio= 0.2 )
 
 #Agrego lags de orden 2
 cols_analiticas  <- setdiff( colnames(dataset),  c("numero_de_cliente","foto_mes","mes","clase_ternaria") )  
-if( palancas$lag2 )   Lags( cols_analiticas, 2, palancas$delta2 )
+if( palancas$lag2 )   Lags( cols_analiticas, 5, palancas$delta2 )
 CanaritosImportancia( canaritos_ratio= 0.1 )
 
 #Agrego lags de orden 3
 cols_analiticas  <- setdiff( colnames(dataset),  c("numero_de_cliente","foto_mes","mes","clase_ternaria") )
-if( palancas$lag3 )   Lags( cols_analiticas, 3, palancas$delta3 )
+if( palancas$lag3 )   Lags( cols_analiticas, 4, palancas$delta3 )
 CanaritosImportancia( 0.1 )      # vuelvo a hacer lugar gracias a los canaritos
 
 #Agrego lags de orden 4
 cols_analiticas  <- setdiff( colnames(dataset),  c("numero_de_cliente","foto_mes","mes","clase_ternaria") )
-if( palancas$lag4 )   Lags(  cols_analiticas, 4, palancas$delta4 )
+if( palancas$lag4 )   Lags(  cols_analiticas, 3, palancas$delta4 )
 CanaritosImportancia( 0.1 )
 
 #Agrego lags de orden 5
 cols_analiticas  <- setdiff( colnames(dataset),  c("numero_de_cliente","foto_mes","mes","clase_ternaria") )
-if( palancas$lag5 )   Lags( cols_analiticas, 5, palancas$delta5 )
+if( palancas$lag5 )   Lags( cols_analiticas, 2, palancas$delta5 )
 CanaritosImportancia( 0.1 )
 
 #Agrego lags de orden 6
 cols_analiticas  <- setdiff( colnames(dataset),  c("numero_de_cliente","foto_mes","mes","clase_ternaria") )
-if( palancas$lag6 )   Lags( cols_analiticas, 6, palancas$delta6 )
+if( palancas$lag6 )   Lags( cols_analiticas, 1, palancas$delta6 )
 CanaritosImportancia( 0.1 )
 
 
